@@ -5,10 +5,13 @@ class Field:
 
     def __init__(self, value):
         self.value = value
+
     def __str__(self):
         return str(self.value)
+    
     def __repr__(self):
         return str(self.value)
+    
     
 
 class Name(Field):
@@ -23,13 +26,22 @@ class Record:
     def __init__(self, name:Name, phone:Phone=None) -> None:
         self.name = name
         self.phones = [phone] if phone else []
+
     def __str__(self):
         return str(self.phones)
+    
     def __repr__(self):
         return str(self.phones)
+    
     def add_number(self, phone:Phone):
         self.phones.append(phone)
     
+    def del_phone(self, phone):
+        self.phones.remove(phone)
+    
+    def change_phone(self, old_phone, new_phone):
+        phone_index = self.phones.phone_index(old_phone)
+        self.phones[phone_index] = new_phone
     
 
     
@@ -75,9 +87,10 @@ def change_phone_number(*args):
 
 @input_errors
 def print_phone_number(*args):
-    name = Name (args[0])
+    name = Name(args[0])
+    phone = Phone(args[1])
     if contacts.get(name.value):
-        return contacts[name]
+        return contacts[phone]
     return f"No contact with name {name}"
 
 
