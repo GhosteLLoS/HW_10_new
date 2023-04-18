@@ -37,11 +37,19 @@ class Record:
         self.phones.append(phone)
     
     def del_phone(self, phone):
-        self.phones.remove(phone)
+        # self.phones.remove(phone)
+        for i, p in enumerate(self.phones):
+            if p.value == phone.value:
+                return self.phones.pop(i)
     
     def change_phone(self, old_phone, new_phone):
-        phone_index = self.phones.phone_index(old_phone)
-        self.phones[phone_index] = new_phone
+        # phone_index = self.phones.phone_index(old_phone)
+        # self.phones[phone_index] = new_phone
+        del_phone = self.del_phone(old_phone)
+        if del_phone:
+            self.add_number(new_phone)
+            return True
+        return False
     
 
     
@@ -78,9 +86,12 @@ def add(*args):
 @input_errors
 def change_phone_number(*args):
     name = Name(args[0])
-    new_phone = Phone(args[1])
+    # new_phone = Phone(args[1])
+    old_phone = Phone(args[1])
+    new_phone = Phone(args[2])
     if contacts.get(name.value):
-        contacts[name] = new_phone
+        # contacts[name] = new_phone
+        contacts[name.value].change_phone(old_phone, new_phone)
         return f"Phone number for contact {name} changed"
     return f"No contact with name {name}"
 
@@ -88,9 +99,13 @@ def change_phone_number(*args):
 @input_errors
 def print_phone_number(*args):
     name = Name(args[0])
-    phone = Phone(args[1])
-    if contacts.get(name.value):
-        return contacts[phone]
+    # phone = Phone(args[1])
+    # if contacts.get(name.value):
+    #     return contacts[phone]
+    # phone = Phone(args[1])                          #???
+    rec = contacts.get(name.value)
+    if rec:
+        return rec.phones
     return f"No contact with name {name}"
 
 
